@@ -27,6 +27,15 @@ def index():
     estudantes = Estudante.query.all()
     return render_template('index.html', estudantes=estudantes)
 
+@app.route('/add', methods=['GET', 'POST'])
+def add():
+    if request.method == 'POST':
+        estudante = Estudante(request.form['nome'], request.form['idade'])
+        db.session.add(estudante)
+        db.session.commit()
+        return redirect(url_for('index'))
+    return render_template('adicionar.html')
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
